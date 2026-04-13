@@ -1,10 +1,10 @@
 import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import type { Database } from "@/types/database";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
+  // WAŻNE: nie dodawaj kodu między createServerClient a getClaims()
   const cookieMethods: CookieMethodsServer = {
     getAll() {
       return request.cookies.getAll();
@@ -20,17 +20,16 @@ export async function updateSession(request: NextRequest) {
     },
   };
 
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     { cookies: cookieMethods }
   );
 
-  // WAŻNE: nie dodawaj tu żadnej logiki między createServerClient a getUser()
-  // Może to spowodować wylogowanie użytkownika nieoczekiwanie
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // getClaims() czyta claims z JWT lokalnie (brak round-tripu do Supabase)
+  // Używamy w middleware dla wydajności; getUser() (weryfikacja sieciowa) używamy w Server Components
+  const { data } = await supabase.auth.getClaims();
+  const user = data?.claims;
 
   // Trasy publiczne (nie wymagają auth)
   const publicPaths = ["/login", "/register"];

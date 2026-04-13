@@ -25,7 +25,9 @@ components/
 lib/supabase/
   client.ts              — createBrowserClient() — tylko Client Components
   server.ts              — createServerClient() — Server Components/Actions
-  middleware.ts          — updateSession() — odświeżanie sesji w middleware
+  middleware.ts          — updateSession() — getClaims() (fast, no network) dla redirect guard
+lib/                     — pliki generowane przez shadcn Supabase UI (client.ts, server.ts, middleware.ts)
+                           NIE importuj z lib/*.ts w app/ — używaj lib/supabase/*.ts (mają Database typy)
 hooks/useWorkshop.ts     — odczyt warsztatu w Client Components
 types/
   database.ts            — ręczne typy DB (docelowo: supabase gen types)
@@ -42,7 +44,7 @@ middleware.ts            — auth guard, redirect niezalogowanych → /login
 - **VIN decoder**: proxy przez `/api/vin/decode` (ukrywa origin, cache 24h). NHTSA słabo radzi z EU VIN-ami — dodaj fallback ręczny
 
 ## Zmienne środowiskowe (patrz .env.local.example)
-- `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase
+- `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — Supabase (nowe nazwy od 2025)
 - `SUPABASE_SERVICE_ROLE_KEY` — tylko serwer (workshop creation, Edge Functions)
 - `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` — Etap 5
 - `RESEND_API_KEY` — Etap 4 (email)

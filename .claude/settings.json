@@ -4,7 +4,10 @@
       "Bash(npx --yes create-next-app@latest . --typescript --tailwind --app --no-git --eslint --import-alias \"@/*\" --no-src-dir)",
       "Bash(npm install:*)",
       "Bash(npm run:*)",
-      "Read(//c/Users/User/.claude/projects/c--Users-User-Documents-GitHub-SAASforWorkshop/**)"
+      "Read(//c/Users/User/.claude/projects/c--Users-User-Documents-GitHub-SAASforWorkshop/**)",
+      "Bash(npx shadcn@latest add @supabase/supabase-client-nextjs)",
+      "Bash(npx shadcn@latest add @supabase/supabase-client-nextjs --yes)",
+      "Bash(echo \"EXIT: $?\")"
     ]
   }
 }
